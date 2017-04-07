@@ -1,0 +1,43 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <h1>RapidAlert</h1>
+    <p class="lead">RapidAlert is a great service for sharing important information with users nearby.</p>
+</div>
+
+<div class="panel">
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Confirm</th>
+        <th>Number of confirmations</th>
+        <th>Name</th>
+        <th>Added at</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for r in events %}
+    <tr>
+        <td>
+            {% if request.session.session_key != r.session_key_id and r.id not in confirmations %}
+            <a href="{% url 'confirm' event_id=r.id %}">+</a>
+            {% endif %}
+        </td>
+        <td>{{ r.num_conf }}</td>
+        <td>{{ r.title }}</td>
+        <td>{{ r.added_at }}</td>
+        <td><a href="{% url 'view_event' event_id=r.id %}"><input value="Details &raquo;" class="btn btn-info" /></a></td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5">There is no information</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% endblock %}
